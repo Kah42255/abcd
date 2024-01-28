@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                                       //    .pushNamed(Routers.signuppage.name);
                                     },
                                     child: Text(
-                                      "Register Now",
+                                      "Register ",
                                       style: Common().mediumTheme,
                                     )),
                               ],
