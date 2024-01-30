@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ihateu/routet/router_config.dart';
-import 'package:ihateu/screens/1.dart';
 import 'package:ihateu/onbording_screeen.dart';
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({ Key? key});
+  const MyApp({  Key? key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: onbordingScreen(),
+      home: const onbordingScreen(),
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: true,

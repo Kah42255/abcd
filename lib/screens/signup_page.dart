@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ihateu/screens/fade.dart';
-import 'package:go_router/go_router.dart';
 import 'package:ihateu/commme/comme.dart';
 import 'package:ihateu/wig/custom.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ihateu/screens/contnuregster.dart';
 
 class singup extends StatefulWidget {
   const singup({super.key});
@@ -71,7 +71,9 @@ class _singupState extends State<singup> {
                           delay: 2.7,
                           child: CustomElevatedButton(
                             message: "Register",
-                            function: () {},
+                            function: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) =>const Contregster() ,));
+                            },
                             color: Colors.black,
                           ),
                         ),

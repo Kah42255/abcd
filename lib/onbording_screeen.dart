@@ -14,7 +14,7 @@ class onbordingScreen extends StatefulWidget {
 }
 
 class _onbordingScreenState extends State<onbordingScreen> {
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   bool onlaste = false;
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,14 @@ class _onbordingScreenState extends State<onbordingScreen> {
                 onlaste = (index == 2);
               });
             },
-            children: [
+            children: const [
               page1(),
               page2(),
               page3(),
             ],
           ),
           Container(
-              alignment: Alignment(0, 0.75),
+              alignment: const Alignment(0, 0.75),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -70,7 +70,7 @@ class _onbordingScreenState extends State<onbordingScreen> {
                           ),
                           onTap: () {
                             _controller.nextPage(
-                                duration: Duration(milliseconds: 500),
+                                duration: const Duration(milliseconds: 500),
                                 curve: Curves.ease);
                           },
                         ),

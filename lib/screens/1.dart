@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ihateu/screens/fade.dart';
 import 'package:ihateu/commme/comme.dart';
 import 'package:ihateu/wig/custom.dart';
-import 'package:go_router/go_router.dart';
-import 'package:ihateu/routet/routers.dart';
 import 'package:ihateu/screens/LoginPage.dart';
 import 'package:ihateu/screens/signup_page.dart';
 class home extends StatefulWidget {
