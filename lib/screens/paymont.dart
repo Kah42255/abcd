@@ -19,7 +19,7 @@ class _PaymontState extends State<Paymont> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Enter Your Information',style: Common().mediumTheme,),
+          title: Text('Enter Your Information', style: Common().mediumTheme),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -77,9 +77,9 @@ class _PaymontState extends State<Paymont> {
   @override
   Widget build(BuildContext context) {
     List<String> paymentMethods = [
-      'Credit Card',
-      'Debit Card',
-      'PayPal',
+      'La carte Edahabia',
+      'La carte Card CiB',
+      'Cash', // Add 'Cash' as a payment method
     ];
 
     return Scaffold(
@@ -101,8 +101,7 @@ class _PaymontState extends State<Paymont> {
           children: [
             Text(
               'Choose Payment Method',
-              style: Common().titelTheme
-,
+              style: Common().titelTheme,
             ),
             const SizedBox(height: 20),
             Column(
@@ -120,7 +119,9 @@ class _PaymontState extends State<Paymont> {
                           });
                         },
                         onArrowTap: () {
-                          _showInputDialog(context, method);
+                          if (method != 'Cash') {
+                            _showInputDialog(context, method);
+                          }
                         },
                       ))
                   .toList(),
@@ -163,16 +164,31 @@ class PaymentMethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    Widget iconWidget = SizedBox();
+    if (method == 'La carte Edahabia') {
+      iconWidget = Image.asset(
+        'assets/images/edahabia_icon.png', // Replace 'edahabia_icon.png' with your actual image asset
+        width: 24, // Adjust size as needed
+        height: 24,
+      );
+    } else if (method == 'La carte Card CiB') {
+      iconWidget = Image.asset(
+        'assets/images/card_cib_icon.png', // Replace 'card_cib_icon.png' with your actual image asset
+        width: 24, // Adjust size as needed
+        height: 24,
+      );
+    }
+
+  return GestureDetector(
       onTap: onTap,
       child: Card(
         elevation: 4,
-        margin: const EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -184,16 +200,20 @@ class PaymentMethodCard extends StatelessWidget {
                       onTap();
                     },
                   ),
+                  SizedBox(width: 10), // Add some space between checkbox and icon
+                  iconWidget, // Display the custom icon
+                  SizedBox(width: 10), // Add some space between icon and text
                   Text(
                     method,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: onArrowTap,
-                child: const Icon(Icons.arrow_forward_ios),
-              ),
+              if (method != 'Cash') // Display the arrow icon if method is not 'Cash'
+                GestureDetector(
+                  onTap: onArrowTap,
+                  child: Icon(Icons.arrow_forward_ios),
+                ),
             ],
           ),
         ),
@@ -201,4 +221,3 @@ class PaymentMethodCard extends StatelessWidget {
     );
   }
 }
-
