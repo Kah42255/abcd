@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ihateu/screens/fade.dart';
 import 'package:ihateu/commme/comme.dart';
+import 'package:ihateu/screens/signup_page.dart';
 import 'package:ihateu/wig/custom.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -12,15 +14,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool flag = true;
+  bool _obscurePassword = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      // Navigate to service page on successful login
+      
+    } catch (error) {
+      print('Login error: $error');
+      // Handle login error here
+      // You can display an error message to the user
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      backgroundColor: const Color(0xFFE8ECF4),
+      backgroundColor: const Color.fromARGB(255, 220, 251, 237),
       body: SafeArea(
-        child: SingleChildScrollView( // Wrap with SingleChildScrollView
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -30,11 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                 FadeInAnimation(
                   delay: 1,
                   child: IconButton(
-                      onPressed: () {
-                    //    GoRouter.of(context)
-                          //  .pushNamed(Routers.main.name);
-                      },
-                      icon: const Icon(Icons.keyboard_return_sharp, size: 35)),
+                    onPressed: () {
+                      // Navigate back to previous screen
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.keyboard_return_sharp, size: 35),
+                    color: const Color.fromARGB(255, 94, 218, 218),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -63,9 +83,10 @@ class _LoginPageState extends State<LoginPage> {
                   child: Form(
                     child: Column(
                       children: [
-                        const FadeInAnimation(
+                        FadeInAnimation(
                           delay: 1.9,
                           child: CustomTextFormField(
+                            controller: _emailController,
                             hinttext: 'Enter your email',
                             obsecuretext: false,
                           ),
@@ -76,19 +97,28 @@ class _LoginPageState extends State<LoginPage> {
                         FadeInAnimation(
                           delay: 2.2,
                           child: TextFormField(
-                            obscureText: flag ? true : false,
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
                             decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(18),
-                                hintText: "Enter your password",
-                                hintStyle: Common().hinttext,
-                                border: OutlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.black),
-                                    borderRadius: BorderRadius.circular(12)),
-                                suffixIcon: IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                        Icons.remove_red_eye_outlined))),
+                              contentPadding: const EdgeInsets.all(18),
+                              hintText: "Enter your password",
+                              hintStyle: Common().hinttext,
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(color: Colors.black),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword; // Toggle password visibility
+                                  });
+                                },
+                                icon: Icon(
+                                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         FadeInAnimation(
@@ -96,31 +126,23 @@ class _LoginPageState extends State<LoginPage> {
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: TextButton(
-                                onPressed: () {
-                                  
-                                },
-                                child: Text(
-                                  "Forget Password?",
-                                  style: Common().semiboldblack,
-                                )),
+                              onPressed: () {
+                                // Implement forget password functionality here
+                              },
+                              child: Text(
+                                "Forget Password?",
+                                style: Common().hinttext,
+                              ),
+                            ),
                           ),
                         ),
                         FadeInAnimation(
                           delay: 2.8,
                           child: CustomElevatedButton(
                             message: "Login",
-                            function: () {
-                              if (flag) {
-                                setState(() {
-                                  flag = false;
-                                });
-                              } else {
-                                setState(() {
-                                  flag = true;
-                                });
-                              }
-                            },
-                            color: Colors.black,
+                            function: _login,
+                            color: const Color.fromARGB(255, 94, 218, 218),
+                            sideColor: Colors.white,
                           ),
                         ),
                       ],
@@ -141,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                           delay: 2.2,
                           child: Text(
                             "Or Log with",
-                            style: Common().semiboldblack,
+                            style: Common().hinttext,
                           ),
                         ),
                         const SizedBox(
@@ -156,8 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SvgPicture.asset(
-                                    "assets/images/facebook_ic (1).svg"),
+                                SvgPicture.asset("assets/images/facebook_ic (1).svg"),
                                 SvgPicture.asset("assets/images/google_ic-1.svg"),
                                 Image.asset("assets/images/Vector.png")
                               ],
@@ -176,14 +197,18 @@ class _LoginPageState extends State<LoginPage> {
                                   style: Common().hinttext,
                                 ),
                                 TextButton(
-                                    onPressed: () {
-                                    //  GoRouter.of(context)
-                                      //    .pushNamed(Routers.signuppage.name);
-                                    },
-                                    child: Text(
-                                      "Register ",
-                                      style: Common().mediumTheme,
-                                    )),
+                                  onPressed: () {
+                                    // Navigate to registration screen
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const SignUp()),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Register ",
+                                    style: Common().mediumTheme,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

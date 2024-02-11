@@ -9,8 +9,17 @@ class page2 extends StatefulWidget {
 class _page2State extends State<page2> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueAccent,
+    return  Scaffold(
+      body: Stack(
+        children: [
+        Image.asset(
+            'assets/images/Plan de travail 3.jpg',
+            fit: BoxFit.fill,
+            height: double.infinity,
+            width: double.infinity,
+          ),
+        ],
+      )
     );
   }
 }

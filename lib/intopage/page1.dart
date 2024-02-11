@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-class page1 extends StatefulWidget {
-  const page1({super.key});
 
-  @override
-  State<page1> createState() => _page1State();
-}
+class Page1 extends StatelessWidget {
+  const Page1({Key? key}) : super(key: key);
 
-class _page1State extends State<page1> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black12,
+    return Scaffold(
+      body: Stack(
+        children: [
+          Image.asset('assets/images/Plan de travail 1.jpg',
+          fit: BoxFit.fill,
+            height: double.infinity,
+            width: double.infinity,),
+          
+        ],
+      )
     );
   }
 }

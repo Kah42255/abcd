@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "809222579010",
+    "project_id": "essay-da368",
+    "storage_bucket": "essay-da368.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809222579010:android:d3c6378ed71e32fa509edb",
+        "android_client_info": {
+          "package_name": "com.example.ihateu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9SUQR0mIvMVH7THsWlm61IxRQmYAtGMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:809222579010:android:e07b91f66aebae12509edb",
+        "android_client_info": {
+          "package_name": "com.example.signuppro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9SUQR0mIvMVH7THsWlm61IxRQmYAtGMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

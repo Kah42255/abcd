@@ -42,11 +42,14 @@ class CustomElevatedButton extends StatefulWidget {
   final String message;
   final FutureOr<void> Function() function;
   final Color? color;
+   final Color? sideColor;
+   
   const CustomElevatedButton({
     Key? key,
     required this.message,
     required this.function,
     this.color = Colors.white,
+     this.sideColor,
   }) : super(key: key);
 
   @override
@@ -63,13 +66,13 @@ class _CustomElevatedButtonState extends State<CustomElevatedButton> {
           loading = true;
         });
         await widget.function();
-      
+
         setState(() {
           loading = false;
         });
       },
       style: ButtonStyle(
-          side: const MaterialStatePropertyAll(BorderSide(color: Colors.black)),
+          side:MaterialStatePropertyAll(BorderSide(color: widget.sideColor ?? Colors.black)),
           shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
           fixedSize: const MaterialStatePropertyAll(Size.fromWidth(370)),

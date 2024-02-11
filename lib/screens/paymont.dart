@@ -74,15 +74,15 @@ class _PaymontState extends State<Paymont> {
     );
   }
 
+  List<String> paymentMethods = [
+    'La carte Edahabia',
+    'La carte Card CiB',
+    'Cash', // Add 'Cash' as a payment method
+  ];
   @override
   Widget build(BuildContext context) {
-    List<String> paymentMethods = [
-      'La carte Edahabia',
-      'La carte Card CiB',
-      'Cash', // Add 'Cash' as a payment method
-    ];
-
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xFFE8ECF4),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -130,11 +130,13 @@ class _PaymontState extends State<Paymont> {
             CustomElevatedButton(
               function: () {
                 // Implement logic for handling the selected payment methods
-                String selectedMethodsText =
-                    _selectedMethods.isNotEmpty ? _selectedMethods.join(", ") : "None";
+                String selectedMethodsText = _selectedMethods.isNotEmpty
+                    ? _selectedMethods.join(", ")
+                    : "None";
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Selected Payment Methods: $selectedMethodsText'),
+                    content:
+                        Text('Selected Payment Methods: $selectedMethodsText'),
                   ),
                 );
               },
@@ -164,7 +166,7 @@ class PaymentMethodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget iconWidget = SizedBox();
+    Widget iconWidget = const SizedBox();
     if (method == 'La carte Edahabia') {
       iconWidget = Image.asset(
         'assets/images/edahabia_icon.png', // Replace 'edahabia_icon.png' with your actual image asset
@@ -179,16 +181,16 @@ class PaymentMethodCard extends StatelessWidget {
       );
     }
 
-  return GestureDetector(
+    return GestureDetector(
       onTap: onTap,
       child: Card(
         elevation: 4,
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -200,19 +202,24 @@ class PaymentMethodCard extends StatelessWidget {
                       onTap();
                     },
                   ),
-                  SizedBox(width: 10), // Add some space between checkbox and icon
+                  const SizedBox(
+                      width: 10), // Add some space between checkbox and icon
                   iconWidget, // Display the custom icon
-                  SizedBox(width: 10), // Add some space between icon and text
+                  const SizedBox(
+                  
+                      width: 10), // Add some space between icon and text
                   Text(
                     method,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              if (method != 'Cash') // Display the arrow icon if method is not 'Cash'
+              if (method !=
+                  'Cash') // Display the arrow icon if method is not 'Cash'
                 GestureDetector(
                   onTap: onArrowTap,
-                  child: Icon(Icons.arrow_forward_ios),
+                  child: const Icon(Icons.arrow_forward_ios),
                 ),
             ],
           ),
