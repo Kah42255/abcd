@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: onbordingScreen(),
+      home: const onbordingScreen(),
       theme: ThemeData(
         brightness: Brightness.light,
         useMaterial3: true,

@@ -44,6 +44,8 @@ dependencies:
   firebase_core: ^2.25.4
   quickalert: ^1.0.2
   firebase_auth: ^4.17.4
+  cloud_firestore: ^4.15.5
+  
 
 dev_dependencies:
   flutter_test:

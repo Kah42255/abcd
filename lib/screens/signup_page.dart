@@ -1,3 +1,5 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
@@ -15,77 +17,76 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   Future<void> signup() async {
-  try {
-    String email = emailController.text.trim();
-    String password = passwordController.text.trim();
-    String confirmPassword = confirmPasswordController.text.trim();
+    try {
+      String email = emailController.text.trim();
+      String password = passwordController.text.trim();
+      String confirmPassword = confirmPasswordController.text.trim();
 
-    // Check if password meets the minimum length requirement
-    if (password.length < 6) {
+      // Check if password meets the minimum length requirement
+      if (password.length < 6) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Password must be at least 6 characters long'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Passwords do not match'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (userCredential.user != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const adrath()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('User registration failed'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      print('FirebaseAuthException: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password must be at least 6 characters long'),
+        SnackBar(
+          content: Text('Error: ${e.message}'),
           backgroundColor: Colors.red,
         ),
       );
-      return;
-    }
-
-    if (password != confirmPassword) {
+    } catch (e) {
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    if (userCredential.user != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const adrath()),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('User registration failed'),
+        SnackBar(
+          content: Text('Error: $e'),
           backgroundColor: Colors.red,
         ),
       );
     }
-  } on FirebaseAuthException catch (e) {
-    print('FirebaseAuthException: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error: ${e.message}'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  } catch (e) {
-    print('Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error: $e'),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -181,16 +182,52 @@ class _SignUpState extends State<SignUp> {
                             obsecuretext: true,
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        FadeInAnimation(
-                          delay: 2.7,
-                          child: CustomElevatedButton(
-                            message: "Register",
-                            function: signup,
-                            color: const Color.fromARGB(255, 94, 218, 218),
-                            sideColor: Colors.white,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: SizedBox(
+                            height: 50,
+                            width: 350,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                try {
+                                  CollectionReference collRef =
+                                      FirebaseFirestore.instance
+                                          .collection('users');
+                                  collRef.add({
+                                    'username':
+                                        usernameController.text.toString(),
+                                    'email': emailController.text.toString(),
+                                  });
+
+                                  // Continue with user registration
+                                  await signup();
+                                } catch (e) {
+                                  // Handle errors
+                                  print('Error: $e');
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Error: $e'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 94, 218, 218),
+                                ),
+                                side: MaterialStateProperty.all<BorderSide>(
+                                  BorderSide(
+                                      color: Colors
+                                          .white), // Add your desired side color here
+                                ),
+                              ),
+                              child: const Text(
+                                'register',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -255,7 +292,8 @@ class _SignUpState extends State<SignUp> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const LoginPage()),
+                                          builder: (context) =>
+                                              const LoginPage()),
                                     );
                                   },
                                   child: Text(
