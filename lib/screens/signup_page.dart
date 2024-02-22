@@ -1,8 +1,8 @@
-
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:ihateu/commme/comme.dart';
 import 'package:ihateu/screens/LoginPage.dart';
 import 'package:ihateu/screens/athentadres.dart';
@@ -197,16 +197,35 @@ class _SignUpState extends State<SignUp> {
                                     'username':
                                         usernameController.text.toString(),
                                     'email': emailController.text.toString(),
-                                  });
+                                  }).then((value) => print(value.id));
+                                  collRef.get().then(
+                                      (QuerySnapshot querySnapshot) {
+                                    querySnapshot.docs.forEach(
+                                        (DocumentSnapshot documentSnapshot) {
+                                      if (documentSnapshot.exists) {
+                                        Map<String, dynamic> data =
+                                            documentSnapshot.data()
+                                                as Map<String, dynamic>;
+                                        // Access data from the document
+                                        String username = data['username'];
+                                        String email = data['email'];
+                                        // You can access other fields similarly
+                                        log(
+                                            "Username: $username, Email: $email");
+                                      } else {
+                                        log('Document does not exist');
+                                      }
+                                    });
+                                  }).catchError((error) => log(
+                                      "Failed to retrieve user data: $error"));
 
-                                  // Continue with user registration
-                                  await signup();
+                                  //await signup();
                                 } catch (e) {
                                   // Handle errors
-                                  print('Error: $e');
+                                  log(e.toString());
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('Error: $e'),
+                                      content: Text(e.toString()),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
